@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   
-  <title itemprop="name">archive_a: 2021/5 | Jarvis&#39; blog</title>
+  <title itemprop="name">广度优先遍历寻找所有路径 | Jarvis&#39; blog</title>
   
     <link rel="shortcut icon" href="/images/33cat.png">
   
@@ -235,130 +235,239 @@
   </div>
 </header>
 
-      <div class="blank" style="padding-top: 75px;">
-</div>
-<div id="content" class="site-content">
-  <div id="main">
-    <header class="page-header">
-      <h1 class="cat-title">
-      归档</h1>
-      <span class="cat-des">
-        <p>
-        Archives</p>
-      </span>
+      <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+<div class="pattern-center-blank"></div>
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/cover/img3.jpg);" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/cover/img3.jpg">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      广度优先遍历寻找所有路径</h1>
+      <p class="entry-census">
+        <span>
+          <a href="">
+            <img src="/image/33cat1.jpg">
+          </a>
+        </span>
+        <span>
+          <a href=""></a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2021-6-3<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
     </header>
-    <div id="main-part">
-      <article class="art">
-        <div class="art-main">
-          <div class="art-content">
-            <div id="archives">
-              <p style="text-align:right;">
-                [<span id="al_expand_collapse" style="cursor: s-resize;">
-                全部展开/收缩</span>
-              ]</p>
-              
-              
-              
-              
-              
+  </div>
+
+<div id="content" class="site-content">
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>利用（实验指导书186页实验8.2）的代码，用广度优先遍历的方法，找出顶点4到顶点1的路径并输出该路径。网上大部分教程都是用递归加深度优先遍历来做的，而这次题目要求用广度遍历。<br><img src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/blog_image/数据结构/1.jpg" width=400 height=300 /></p>
+<h3 id="程序思想"><a href="#程序思想" class="headerlink" title="程序思想"></a>程序思想</h3><p>程序简述图：</p>
+<a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/blog_image/数据结构/2.png" data-fancybox="images" data-caption="5"><img src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/blog_image/数据结构/2.png" /></a>
+<p>附加题根据广度优先遍历的思想，一层一层地遍历符合条件的节点。路径结束条件是：1.找到与开头相同节点2.找到这个路径节点走过的节点3.找到目标节点。同时用两个栈数组分别储存前一层的节点的路径和后一层的节点的路径。程序思想是：遍历前一层节点，通过前一层节点拓展后一层节点，并把前一层节点路径复制到后一层节点中，用while周而复始。结束的条件是：后一层的栈为空。</p>
+<h3 id="主要函数"><a href="#主要函数" class="headerlink" title="主要函数"></a>主要函数</h3><pre class="language-[cpp]" data-language="[cpp]"><code class="language-[cpp]">void PathAll(AdjGraph *&amp;G,int u ,int v)  &#x2F;&#x2F;G为图，u为起始点，v为终点
+&#123;
+    &#x2F;&#x2F;初始化变量和栈——————————————————————————————
+    int i, j;&#x2F;&#x2F;作为通用计数变量
+    int a, b;&#x2F;&#x2F;分别为A栈下标，B栈下标
+int g;&#x2F;&#x2F;分别为A栈总数
+int h;&#x2F;&#x2F;为路径数
+    int k;&#x2F;&#x2F;作为广度层数变量
+    int e;&#x2F;&#x2F;作为中间变量
+    int patha[10][10], pathb[10][10];&#x2F;&#x2F;走过的路径
+    ArcNode* p;&#x2F;&#x2F;初始化图
+    LinkStNode* A[10],*B[10],*C[10];&#x2F;&#x2F;A作为输入栈，B为输出栈,C作为中转栈
+    for (i &#x3D; 0; i &lt; 10; i++) &#123;
+        InitStack(A[i]); 
+        InitStack(B[i]); 
+        InitStack(C[i]);;
+    &#125;
+    &#x2F;&#x2F;赋初值：变量、path和栈A、B、C———————————————————————
+    a &#x3D; 0;
+    b &#x3D; 0;
+    k &#x3D; 1;
+    g &#x3D; 1;
+    h &#x3D; 0;
+    for (i &#x3D; 0; i &lt; 10; i++) &#123;
+        for (j &#x3D; 0; j &lt; 10; j++) &#123; 
+            patha[i][j] &#x3D; 0; 
+            pathb[i][j] &#x3D; 0;
+        &#125;
+    &#125;
+    Push(A[a], u);
+    &#x2F;&#x2F;正式处理—————————————————————————————————
+    while (g !&#x3D; 0) &#123;
+        b &#x3D; 0;
+        
+        for (a &#x3D; 0; a &lt; g; a++) &#123;
+            Pop(A[a], e);
+            p &#x3D; G-&gt;adjlist[e].firstarc;
+            Push(A[a], e);
+            
+            while (p !&#x3D; NULL) &#123;
                 
-                <h3 class="al_year">2021年</h3>
-              
-              
-                
-                <ul class="al_mon_list">
-                  <li class="al_li">
-                    <span class="al_mon" style="cursor: s-resize;">
-                      06月(<span id="post-num">
-                      3</span>
-                    篇文章)</span>
-                    <ul class="al_post_list" style="">
-              
-                      <li>
-                        <a href="/2021/06/03/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86%E6%90%9C%E7%B4%A2%E8%B7%AF%E5%BE%84/">
-                          <span style="color:#0bf;">
-                          03日11:01:07</span>
-                          广度优先遍历寻找所有路径
-                        </a>
-                      </li>
-                      
-                    </ul>
-                  </li>
-                </ul>
-              
-              
-              
-              
-              
-              
-                
-                <ul class="al_mon_list">
-                  <li class="al_li">
-                    <span class="al_mon" style="cursor: s-resize;">
-                      05月(<span id="post-num">
-                      3</span>
-                    篇文章)</span>
-                    <ul class="al_post_list" style="">
-              
-                      <li>
-                        <a href="/2021/05/30/%E5%A5%BD%E7%9C%8B%E7%9A%84%E5%9B%BE%E7%89%87/">
-                          <span style="color:#0bf;">
-                          30日13:25:39</span>
-                          好看的图片
-                        </a>
-                      </li>
-                      
-              
-              
-              
-              
-              
-                      <li>
-                        <a href="/2021/05/29/%E6%9B%B4%E6%94%B9%E6%99%B6%E6%8C%AF/">
-                          <span style="color:#0bf;">
-                          29日23:34:48</span>
-                          STM32 F407修改配置文件的晶振频率
-                        </a>
-                      </li>
-                      
-              
-              
-              
-              
-              
-                      <li>
-                        <a href="/2021/05/26/yyds/">
-                          <span style="color:#0bf;">
-                          26日18:22:00</span>
-                          happy everyday
-                        </a>
-                      </li>
-                      
-              
-              
-              
-              
-              
-                      <li>
-                        <a href="/2021/05/24/hello-world/">
-                          <span style="color:#0bf;">
-                          24日00:11:05</span>
-                          Hello World
-                        </a>
-                      </li>
-                      
-                    </ul>
-                  </li>
-                </ul>
-              
-              
-            </div>
+                if (p-&gt;adjvex &#x3D;&#x3D; v) &#123;       &#x2F;&#x2F;当找到v时直接输出
+                    h++;
+                    printf(&quot;\n路径%d：&quot;,h);
+                    while (!StackEmpty(A[a])) &#123;
+                        Pop(A[a], e);
+                        Push(C[a], e);
+                    &#125;
+                    while (!StackEmpty(C[a])) &#123;
+                        Pop(C[a], e);
+                        printf(&quot;%d &quot;, e);
+                    &#125;
+                    printf(&quot;%d &quot;, p-&gt;adjvex &#x3D;&#x3D; v);
+                &#125;
+                else if (p-&gt;adjvex !&#x3D; u &amp;&amp; patha[a][p-&gt;adjvex] !&#x3D; 1) &#123;  &#x2F;&#x2F;符合进B栈的条件
+                    &#x2F;&#x2F;将A赋值给B————————————————————
+                    while (!StackEmpty(A[a]))&#123;
+                         Pop(A[a],e);
+                         Push(C[a], e);
+                    &#125;
+                    while (!StackEmpty(C[a])) &#123;
+                        Pop(C[a], e);
+                        Push(B[b], e);
+                        Push(A[a], e);
+                    &#125;
+                    &#x2F;&#x2F;———————————————————————————————
+                    Push(B[b], p-&gt;adjvex);
+                    
+                    for (i &#x3D; 0; i &lt; 10; i++) &#123;
+                        pathb[b][i] &#x3D; patha[a][i];&#x2F;&#x2F;将patha赋值给pathb
+                    &#125;
+                    pathb[b][p-&gt;adjvex] &#x3D; 1;
+
+                    b++;&#x2F;&#x2F;将路径数增加
+                &#125;
+                p &#x3D; p-&gt;nextarc;
+            &#125;
+            
+        &#125;
+        g &#x3D; b;
+
+        for (i &#x3D; 0; i &lt; b; i++) &#123;
+            for (j &#x3D; 0; j &lt; 10; j++) &#123;
+                patha[i][j] &#x3D; pathb[i][j];
+            
+            &#125;
+        &#125;
+
+        &#x2F;&#x2F;清空A栈
+        for (i &#x3D; 0; i &lt; 10; i++) &#123;
+            while (!StackEmpty(A[i]))
+            &#123;
+                Pop(A[i], e);
+               
+            &#125;
+        
+        &#125;
+        &#x2F;&#x2F;赋值B-》A
+        for (i &#x3D; 0; i &lt; 10; i++) &#123;
+            while (!StackEmpty(B[i]))
+            &#123;
+                Pop(B[i], e);
+                Push(C[i], e);
+            &#125;
+            while (!StackEmpty(C[i]))
+            &#123;
+                Pop(C[i], e);
+                Push(A[i], e);
+            &#125;
+        &#125;
+        &#x2F;&#x2F;清空B栈
+        for (i &#x3D; 0; i &lt; 10; i++) &#123;
+            while (!StackEmpty (B[i]))
+            &#123;
+                Pop(B[i], e);
+            &#125;&#125;
+        k++;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="下载程序"><a href="#下载程序" class="headerlink" title="下载程序"></a>下载程序</h3><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/che10086/CDN@master/%E8%B5%84%E6%BA%90/fujiati9.rar">Download</a></p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>在找路径这方面，广度优先遍历比深度优先遍历复杂很多，不论是空间复杂度还是时间复杂度。找路径还是用深度遍历递归算法比较好，除非要应对课程作业。</p>
+
+        </div>
+        <!-- .entry-content -->
+        
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+        
+          
+            <div class="post-nepre full next">
+          
+            <a href="/2021/05/30/%E5%A5%BD%E7%9C%8B%E7%9A%84%E5%9B%BE%E7%89%87/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/cover/img8.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/cover/img8.jpg">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                好看的图片</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
+      
+<div id="vcomments"></div>
+<script>
+  window.onload = function(){
+      var valine = new Valine();
+      valine.init({
+        el: '#vcomments',
+        appId: "Gev6HUlagW5UUVkAxh8gtSNr-gzGzoHsz",
+        appKey: "MpHJ9GHdK70ezHa1HANCvOWa",
+        path: window.location.pathname,
+        placeholder: "你是我一生只会遇见一次的惊喜 ..."
+      })
+  }
+</script>
+
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+          <a href="" class="profile gravatar"><img src="/image/33cat1.jpg" itemprop="image" alt="" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="" itemprop="url" rel="author"></a>
+            </h3>
           </div>
         </div>
-      </article>
-    </div>
-  </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i>落叶飘零，又是一个春夏秋冬</p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
 </div>
+
+
 
     </div>    
     <div class="ins-search">
