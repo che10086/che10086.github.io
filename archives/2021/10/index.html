@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   
-  <title itemprop="name">用matlab实现遗传算法 | Jarvis&#39; blog</title>
+  <title itemprop="name">archive_a: 2021/10 | Jarvis&#39; blog</title>
   
     <link rel="shortcut icon" href="/images/33cat.png">
   
@@ -235,369 +235,169 @@
   </div>
 </header>
 
-      <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
-<div class="pattern-center-blank"></div>
-
-  <div class="pattern-center single-center">
-    <!-- 有配图默认渲染第一张 -->
-    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/cover/img3.jpg);" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/cover/img3.jpg">
-    </div>
-    <header class="pattern-header single-header">
-      <h1 class="entry-title">
-      用matlab实现遗传算法</h1>
-      <p class="entry-census">
-        <span>
-          <a href="">
-            <img src="/image/33cat1.jpg">
-          </a>
-        </span>
-        <span>
-          <a href=""></a>
-        </span>
-        <span class="bull">
-        ·</span>
-        2021-6-7<span class="bull">
-        ·</span>
-      <span id="busuanzi_value_page_pv"></span>次阅读</p>
-    </header>
-  </div>
-
-<div id="content" class="site-content">
-  <div id="primary" class="content-area">
-    <main id="main" class="site-main" role="main">
-      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
-        <div class="toc"></div>
-        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
-        
-        <div class="entry-content">
-          <p>比较具体地说明：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ae5157c26af9">https://www.jianshu.com/p/ae5157c26af9</a></p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="遗传算法的定义"><a href="#遗传算法的定义" class="headerlink" title="遗传算法的定义"></a>遗传算法的定义</h3><p>遗传算法（Genetic Algorithm, GA）是模拟达尔文生物进化论的自然选择和遗传学机理的生物进化过程的计算模型，是一种通过模拟自然进化过程搜索最优解的方法。</p>
-<p>其主要特点是直接对结构对象进行操作，不存在求导和函数连续性的限定；具有内在的隐并行性和更好的全局寻优能力；采用概率化的寻优方法，不需要确定的规则就能自动获取和指导优化的搜索空间，自适应地调整搜索方向。</p>
-<p>遗传算法以一种群体中的所有个体为对象，并利用随机化技术指导对一个被编码的参数空间进行高效搜索。其中，选择、交叉和变异构成了遗传算法的遗传操作；参数编码、初始群体的设定、适应度函数的设计、遗传操作设计、控制参数设定五个要素组成了遗传算法的核心内容。</p>
-<h3 id="遗传算法执行过程"><a href="#遗传算法执行过程" class="headerlink" title="遗传算法执行过程"></a>遗传算法执行过程</h3><p>遗传算法是从代表问题可能潜在的解集的一个种群（population）开始的，而一个种群则由经过基因（gene）编码的一定数目的个体(individual)组成。每个个体实际上是染色体(chromosome)带有特征的实体。</p>
-<p>染色体作为遗传物质的主要载体，即多个基因的集合，其内部表现（即基因型）是某种基因组合，它决定了个体的形状的外部表现，如黑头发的特征是由染色体中控制这一特征的某种基因组合决定的。因此，在一开始需要实现从表现型到基因型的映射即编码工作。由于仿照基因编码的工作很复杂，我们往往进行简化，如二进制编码。</p>
-<p>初代种群产生之后，按照适者生存和优胜劣汰的原理，逐代（generation）演化产生出越来越好的近似解，在每一代，根据问题域中个体的适应度（fitness）大小选择（selection）个体，并借助于自然遗传学的遗传算子（genetic operators）进行组合交叉（crossover）和变异（mutation），产生出代表新的解集的种群。</p>
-<p>这个过程将导致种群像自然进化一样的后生代种群比前代更加适应于环境，末代种群中的最优个体经过解码（decoding），可以作为问题近似最优解。</p>
-<h3 id="遗传算法的图解"><a href="#遗传算法的图解" class="headerlink" title="遗传算法的图解"></a>遗传算法的图解</h3><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/blog_image/数模/遗传算法/2.webp" data-fancybox="images" data-caption="1"><img src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/blog_image/数模/遗传算法/2.webp" /></a>
-
-<h3 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h3><p>基因型(genotype)：性状染色体的内部表现；</p>
-<p>表现型(phenotype)：染色体决定的性状的外部表现，或者说，根据基因型形成的个体的外部表现；</p>
-<p>进化(evolution)：种群逐渐适应生存环境，品质不断得到改良。生物的进化是以种群的形式进行的。</p>
-<p>适应度(fitness)：度量某个物种对于生存环境的适应程度。</p>
-<p>选择(selection)：以一定的概率从种群中选择若干个个体。一般，选择过程是一种基于适应度的优胜劣汰的过程。</p>
-<p>复制(reproduction)：细胞分裂时，遗传物质DNA通过复制而转移到新产生的细胞中，新细胞就继承了旧细胞的基因。</p>
-<p>交叉(crossover)：两个染色体的某一相同位置处DNA被切断，前后两串分别交叉组合形成两个新的染色体。也称基因重组或杂交；</p>
-<p>变异(mutation)：复制时可能（很小的概率）产生某些复制差错，变异产生新的染色体，表现出新的性状。</p>
-<p>编码(coding)：DNA中遗传信息在一个长链上按一定的模式排列。遗传编码可看作从表现型到基因型的映射。</p>
-<p>解码(decoding)：基因型到表现型的映射。</p>
-<p>个体（individual）：指染色体带有特征的实体；</p>
-<p>种群（population）：个体的集合，该集合内个体数称为种群</p>
-<h3 id="举个程序的例子"><a href="#举个程序的例子" class="headerlink" title="举个程序的例子"></a>举个程序的例子</h3><p>func5是目标函数，一般套程序只要更改func5中的内容。<br>限制条件加在func5最后，用一个afa惩罚系数来约束</p>
-<pre class="language-[matlab]" data-language="[matlab]"><code class="language-[matlab]">%%%%%%%%%%%%%%遗传算法主程序%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear all;%清除所有变量
-close all;%清图
-clc;%清屏
-NP &#x3D; 50;%种群规模
-L&#x3D; 21+63;%物品件数
-Pc &#x3D; 0.8 ;%交叉率
-Pm &#x3D; 0.05;%变异率
-G&#x3D; 100;%最大遗传代数
-afa &#x3D; 10;%惩罚函数系数
-%func5的输入值————————————————
-a &#x3D;-20.8385;
-b &#x3D;-4.1394;
-T0&#x3D;800;
-Gy_sum&#x3D;45;
-r&#x3D;0.075;
-k&#x3D;1440;
-%func5的输入值————————————————
-f &#x3D; randi( [0,1],NP,L)%随机获得初始种群
-
-%%%%%%%%%%%%%%%%%%%遗传算法循环%%%%%%%%%%%%%%%%%%%%%
-for h &#x3D; 1:G
-    %号%%%%%%%%%%%%%%%%%%适应度计算%%%%%%%%%%%%%%5%%%%
-    parfor i &#x3D; 1: NP
-       
-
-        [Fit(i) gy(i,:)]&#x3D; func5( f(i,:),a,b,T0,afa,Gy_sum,r,k,i) ;
-
-    
-    end
-    maxFit &#x3D; max (Fit);%最大值
-    minFit &#x3D; min (Fit) ;%最小值
-    rr &#x3D; find (Fit&#x3D;&#x3D;maxFit ) ;
-    fBest &#x3D; f (rr ( 1,1), : ) ;%历代最优个体
-    frr&#x3D;rr(1,1);
-    GY&#x3D;gy(rr(1,1),:);
-    Fit &#x3D; (Fit - minFit)&#x2F; (maxFit - minFit);
-    %归一化适应度值%%%%%%%%%%%%%%基于轮盘赌的复制操作%%%%%%%%%%%%%
-    sum_Fit &#x3D; sum (Fit) ;
-    fitvalue &#x3D; Fit.&#x2F;sum_Fit;
-    fitvalue &#x3D; cumsum ( fitvalue) ;
-    ms &#x3D; sort (rand (NP,1 ) );
-    fiti &#x3D; 1;
-    newi &#x3D; 1;
-    while newi &lt;&#x3D; NP
-        if(ms ( newi) ) &lt;fitvalue ( fiti)
-            nf(newi, :) &#x3D;f (fiti, : ) ;
-            newi &#x3D; newi + 1;
-        else
-            fiti &#x3D; fiti +1;
-        end
-    end
-    %%%%%%%%%%%%%%%基于概率的交叉操作%%%%%%%%%%%%%
-    for i &#x3D; 1:2:NP
-        p &#x3D; rand;
-        if p &lt; Pc
-            q&#x3D; randi ( [0,1],1,L);
-            for j &#x3D; 1:L
-                if q(j)&#x3D;&#x3D;1
-                    temp &#x3D; nf (i + 1,j );nf(i + 1,j) &#x3D; nf (i,j);nf ( i,j)&#x3D; temp;
-                end
-            end
-        end
-    end
-    %%%%%%%%%%%%%基于概率的变异操作%%%%%%%%%%%%%%
-    for m &#x3D; 1:NP
-        parfor n &#x3D; 1:L
-            r &#x3D; rand ( 1,1) ;
-            if r &lt; Pm
-                nf (m, n) &#x3D; ~nf (m, n) ;
-            end
-        end
-    end
-    f &#x3D; nf;
-    f (1,: ) &#x3D; fBest;
-    %保留最优个体在新种群中
-    trace (h) &#x3D; maxFit;
-    %历代最优适应度
-end
-fBest
-%最优个体
-figure;
-plot (trace)
-xlabel (&#39;迭代次数&#39;)
-ylabel(&#39;目标函数值&#39;)
-title( &#39;适应度进化曲线&#39; )
-</code></pre>
-<pre class="language-[matlab]" data-language="[matlab]"><code class="language-[matlab]">%%%%%%%%%%%%%适应度函数%%%%%%%%%%%%%
-function [result,gy] &#x3D; func5 (f,a,b,T0,afa,Gy_sum,r,k,i)
-Gy&#x3D;zeros(1,21);
-day_num&#x3D;sum(f(1:21));
-tspan1&#x3D;[0:0.0001:0.0039];
-tspan2&#x3D;[0.004:0.0001:0.9999];
-tspan3&#x3D;[0:0.0001:0.9999];
-sum_H&#x3D;0;
-for j&#x3D;1:21        %转化为10进制
-    H(j)&#x3D;f(j*3-2+21)*4;
-    H(j)&#x3D;f(j*3-1+21)*2+H(j);
-    H(j)&#x3D;f(j*3+21)+H(j)+1;
-end
-for j&#x3D;1:21
-    if f(j)&#x3D;&#x3D;1
-        sum_H&#x3D;sum_H+H(j);
-    end
-end
-
-if sum(f(1:21))&lt;7 || sum(f(1:21))&gt;18
-    parfor j&#x3D;1:21
-    Gy(j)&#x3D;Gy_sum&#x2F;sum(f(1:21));
-    end
-else
-    x&#x3D;0;%标记变量
-    while x&#x3D;&#x3D;0
-        x&#x3D;1;
-        
-        for j&#x3D;1:21
-            if f(j)&#x3D;&#x3D;1
-                Gy(j)&#x3D;H(j)&#x2F;sum_H*Gy_sum;
-                if Gy(j)&lt;2.5
-                    H(j)&#x3D;H(j)+0.5;
-                    x&#x3D;0;
-                elseif Gy(j)&gt;6.5
-                    H(j)&#x3D;H(j)-0.5;
-                    x&#x3D;0;
-                    
-                end
-            end
-        end
-        
-        sum_H&#x3D;0;
-        for j&#x3D;1:21
-            if f(j)&#x3D;&#x3D;1
-                sum_H&#x3D;sum_H+H(j);
-            end
-        end
-    end
-end
-
-% f(1:21)
-% H
-% Gy
-
- p&#x3D;0;%判断是否运行过
-for j&#x3D;1:21
-     c(1)&#x3D;a*Gy(j)+b*Gy(j)^2;
-   
-    if f(j)&#x3D;&#x3D;1
-        if p&#x3D;&#x3D;0
-            [t,T1]&#x3D;ode45(@(t,T) r.*T.*(k-T).&#x2F;k  +   c(1).*T ,tspan1,T0);
-            [t,T2]&#x3D;ode45(@(t,T) r.*T.*(k-T).&#x2F;k  ,tspan2,T1(40));
-            T&#x3D;[T1&#39; T2&#39;];
-            p&#x3D;1;
-        else
-            
-            
-             if p&#x3D;&#x3D;2
-                [t,T1]&#x3D;ode45(@(t,T) r.*T.*(k-T).&#x2F;k  +   c(1).*T ,tspan1,T2(10000));
-                [t,T2]&#x3D;ode45(@(t,T) r.*T.*(k-T).&#x2F;k  ,tspan2,T1(40));
-                T&#x3D;[T T1&#39; T2&#39;];
-                p&#x3D;1;
-            else
-                [t,T1]&#x3D;ode45(@(t,T) r.*T.*(k-T).&#x2F;k +   c(1).*T ,tspan1,T2(9960));
-                [t,T2]&#x3D;ode45(@(t,T) r.*T.*(k-T).&#x2F;k  ,tspan2,T1(40));
-                T&#x3D;[T T1&#39; T2&#39;];
-                p&#x3D;1;
-            end
-            
-        end
-    else
-        if p&#x3D;&#x3D;0
-            
-            [t,T2]&#x3D;ode45(@(t,T) r.*T.*(k-T).&#x2F;k  ,tspan3,T0);
-            T&#x3D;T2&#39;;
-            p&#x3D;2;
-        else
-            if p&#x3D;&#x3D;2
-                [t,T2]&#x3D;ode45(@(t,T) r.*T.*(k-T).&#x2F;k  ,tspan3,T2(10000));
-                T&#x3D;[T  T2&#39;];
-                p&#x3D;2;
-            else
-                [t,T2]&#x3D;ode45(@(t,T) r.*T.*(k-T).&#x2F;k  ,tspan3,T2(9960));
-                T&#x3D;[T  T2&#39;];
-                p&#x3D;2;
-            end
-        end
-    end
-end
-
-fit&#x3D;T0-T(210000);
-
-for i&#x3D;1:21
-    if T(i*10000)&gt;T0
-        fit&#x3D;fit-afa;
-    end
-end
-        
-        
-gy&#x3D;Gy;
-
-if day_num&lt;7 || day_num&gt;18
-    result&#x3D;fit-afa;
-    
-elseif f(1)&#x3D;&#x3D;0||f(21)&#x3D;&#x3D;0
-    result&#x3D;fit-20;
-    
-else
-    result&#x3D;fit;
-    
-end
-
-end
-</code></pre>
-
-<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/blog_image/数模/遗传算法/model3_1.png" data-fancybox="images" data-caption="2"><img src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/blog_image/数模/遗传算法/model3_1.png" /></a>
-
-<h3 id="程序下载"><a href="#程序下载" class="headerlink" title="程序下载"></a>程序下载</h3><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/che10086/CDN@master/%E8%B5%84%E6%BA%90/%E6%95%B0%E6%A8%A1.rar">Download</a></p>
-
-        </div>
-        <!-- .entry-content -->
-        
-        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
-        <footer class="post-footer">
-          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
-          <div class="post-tags">
-          </div>
-          <div class="post-share">
-            <div class="social-share sharehidden share-component"></div>
-            <i class="iconfont show-share icon-forward"></i>
-          </div>
-        </footer><!-- .entry-footer -->
-      </article>
-      <!-- #post-## -->
-      <div class="toc" style="background: none;"></div>
-      <section class="post-squares nextprev">
-        
-          
-            <div class="post-nepre half previous">
-          
-            <a href="/2021/10/28/2021%E6%95%B0%E6%A8%A1%E5%9B%BD%E8%B5%9B/" rel="prev">
-              <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/cover/img5.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/cover/img5.jpg">
-              </div>
-              <span class="label">
-              Previous Post</span>
-              <div class="info">
-                <h3>
-                记录一下数学建模国赛获得省赛二等奖</h3>
-                <hr>
-              </div>
-            </a>
-          </div>
-        
-        
-          
-            <div class="post-nepre half next">
-          
-            <a href="/2021/06/03/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86%E6%90%9C%E7%B4%A2%E8%B7%AF%E5%BE%84/" rel="next">
-              <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/cover/img3.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/che10086/CDN@master/image/cover/img3.jpg">
-              </div>
-              <span class="label">
-              Next Post</span>
-              <div class="info">
-                <h3>
-                广度优先遍历寻找所有路径</h3>
-                <hr>
-              </div>
-            </a>
-          </div>
-        
-      </section>
-      
-<div id="vcomments"></div>
-<script>
-  window.onload = function(){
-      var valine = new Valine();
-      valine.init({
-        el: '#vcomments',
-        appId: "Gev6HUlagW5UUVkAxh8gtSNr-gzGzoHsz",
-        appKey: "MpHJ9GHdK70ezHa1HANCvOWa",
-        path: window.location.pathname,
-        placeholder: "你是我一生只会遇见一次的惊喜 ..."
-      })
-  }
-</script>
-
-      <section class="author-profile">
-        <div class="info" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
-          <a href="" class="profile gravatar"><img src="/image/33cat1.jpg" itemprop="image" alt="" height="70" width="70"></a>
-          <div class="meta">
-            <span class="title">Author</span>
-            <h3 itemprop="name">
-            <a href="" itemprop="url" rel="author"></a>
-            </h3>
-          </div>
-        </div>
-        <hr>
-        <p><i class="iconfont icon-write"></i>落叶飘零，又是一个春夏秋冬</p>
-      </section>
-    </main><!-- #main -->
-  </div><!-- #primary -->
+      <div class="blank" style="padding-top: 75px;">
 </div>
-
-
+<div id="content" class="site-content">
+  <div id="main">
+    <header class="page-header">
+      <h1 class="cat-title">
+      归档</h1>
+      <span class="cat-des">
+        <p>
+        Archives</p>
+      </span>
+    </header>
+    <div id="main-part">
+      <article class="art">
+        <div class="art-main">
+          <div class="art-content">
+            <div id="archives">
+              <p style="text-align:right;">
+                [<span id="al_expand_collapse" style="cursor: s-resize;">
+                全部展开/收缩</span>
+              ]</p>
+              
+              
+              
+              
+              
+                
+                <h3 class="al_year">2021年</h3>
+              
+              
+                
+                <ul class="al_mon_list">
+                  <li class="al_li">
+                    <span class="al_mon" style="cursor: s-resize;">
+                      10月(<span id="post-num">
+                      3</span>
+                    篇文章)</span>
+                    <ul class="al_post_list" style="">
+              
+                      <li>
+                        <a href="/2021/10/28/2021%E6%95%B0%E6%A8%A1%E5%9B%BD%E8%B5%9B/">
+                          <span style="color:#0bf;">
+                          28日20:41:32</span>
+                          记录一下数学建模国赛获得省赛二等奖
+                        </a>
+                      </li>
+                      
+                    </ul>
+                  </li>
+                </ul>
+              
+              
+              
+              
+              
+              
+                
+                <ul class="al_mon_list">
+                  <li class="al_li">
+                    <span class="al_mon" style="cursor: s-resize;">
+                      06月(<span id="post-num">
+                      3</span>
+                    篇文章)</span>
+                    <ul class="al_post_list" style="">
+              
+                      <li>
+                        <a href="/2021/06/07/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/">
+                          <span style="color:#0bf;">
+                          07日12:00:56</span>
+                          用matlab实现遗传算法
+                        </a>
+                      </li>
+                      
+              
+              
+              
+              
+              
+                      <li>
+                        <a href="/2021/06/03/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86%E6%90%9C%E7%B4%A2%E8%B7%AF%E5%BE%84/">
+                          <span style="color:#0bf;">
+                          03日11:01:07</span>
+                          广度优先遍历寻找所有路径
+                        </a>
+                      </li>
+                      
+                    </ul>
+                  </li>
+                </ul>
+              
+              
+              
+              
+              
+              
+                
+                <ul class="al_mon_list">
+                  <li class="al_li">
+                    <span class="al_mon" style="cursor: s-resize;">
+                      05月(<span id="post-num">
+                      3</span>
+                    篇文章)</span>
+                    <ul class="al_post_list" style="">
+              
+                      <li>
+                        <a href="/2021/05/30/%E5%A5%BD%E7%9C%8B%E7%9A%84%E5%9B%BE%E7%89%87/">
+                          <span style="color:#0bf;">
+                          30日13:25:39</span>
+                          好看的图片
+                        </a>
+                      </li>
+                      
+              
+              
+              
+              
+              
+                      <li>
+                        <a href="/2021/05/29/%E6%9B%B4%E6%94%B9%E6%99%B6%E6%8C%AF/">
+                          <span style="color:#0bf;">
+                          29日23:34:48</span>
+                          STM32 F407修改配置文件的晶振频率
+                        </a>
+                      </li>
+                      
+              
+              
+              
+              
+              
+                      <li>
+                        <a href="/2021/05/26/yyds/">
+                          <span style="color:#0bf;">
+                          26日18:22:00</span>
+                          happy everyday
+                        </a>
+                      </li>
+                      
+              
+              
+              
+              
+              
+                      <li>
+                        <a href="/2021/05/24/hello-world/">
+                          <span style="color:#0bf;">
+                          24日00:11:05</span>
+                          Hello World
+                        </a>
+                      </li>
+                      
+                    </ul>
+                  </li>
+                </ul>
+              
+              
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
 
     </div>    
     <div class="ins-search">
